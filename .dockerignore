@@ -3,7 +3,12 @@
 .gitignore
 README.md
 MIGRATION_SUMMARY.md
+CUSTOM_IMAGE_SUMMARY.md
 tearup/
 *.md
 .DS_Store
 *.log
+# Don't ignore database files - we want to copy them into the image
+!database/
+# But ignore generated files in database folder
+database/migration-output.sql

@@ -25,12 +25,12 @@ print_error() {
 }
 
 IMAGE_NAME="mysql-liquibase-custom"
-DOCKERFILE_PATH="database"
+DOCKERFILE_PATH="database/Dockerfile"
 
 case "${1:-build}" in
     "build")
         print_status "Building custom Liquibase image: $IMAGE_NAME"
-        docker build -t "$IMAGE_NAME" "$DOCKERFILE_PATH"
+        docker build -t "$IMAGE_NAME" -f "$DOCKERFILE_PATH" .
         print_status "Build completed successfully!"
         
         print_status "Image details:"
@@ -39,7 +39,7 @@ case "${1:-build}" in
     
     "rebuild")
         print_warning "Rebuilding image without cache..."
-        docker build --no-cache -t "$IMAGE_NAME" "$DOCKERFILE_PATH"
+        docker build --no-cache -t "$IMAGE_NAME" -f "$DOCKERFILE_PATH" .
         print_status "Rebuild completed successfully!"
         ;;
     

@@ -52,7 +52,6 @@ run_liquibase() {
     fi
     
     docker run --rm --network "$NETWORK_NAME" \
-        -v "$(pwd)/database:/liquibase/changelog" \
         "$LIQUIBASE_IMAGE" \
         --url="$DB_URL" \
         --username="$DB_USER" \

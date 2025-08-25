@@ -27,13 +27,14 @@ services:
     depends_on:
       db:
         condition: service_healthy
-    volumes:
-      - ./database:/liquibase/changelog
-    environment:
-      - LIQUIBASE_COMMAND_URL=jdbc:mysql://db:3306/store?useSSL=false&allowPublicKeyRetrieval=true
-      - LIQUIBASE_COMMAND_USERNAME=user
-      - LIQUIBASE_COMMAND_PASSWORD=password
-      - LIQUIBASE_COMMAND_CHANGELOG_FILE=changelog-master.xml
+    working_dir: /liquibase/changelog
+    command: [
+      "update",
+      "--url=jdbc:mysql://db:3306/store?useSSL=false&allowPublicKeyRetrieval=true",
+      "--username=user",
+      "--password=password",
+      "--changelog-file=changelog-master.xml"
+    ]
 
   admin:
     image: adminer
