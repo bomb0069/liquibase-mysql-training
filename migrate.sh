@@ -43,7 +43,9 @@ check_network() {
 # Function to run liquibase command
 run_liquibase() {
     local command=$1
-    print_status "Running Liquibase command: $command"
+    shift  # Remove the first argument (command)
+    local args="$@"  # Get the remaining arguments
+    print_status "Running Liquibase command: $command $args"
     
     # Check if custom image exists, if not build it
     if ! docker images | grep -q "$LIQUIBASE_IMAGE"; then
@@ -57,7 +59,7 @@ run_liquibase() {
         --username="$DB_USER" \
         --password="$DB_PASSWORD" \
         --changeLogFile="$CHANGELOG_FILE" \
-        "$command"
+        "$command" $args
 }
 
 # Main script logic
@@ -86,7 +88,7 @@ case "${1:-help}" in
         fi
         check_network
         print_warning "Rolling back $2 changeset(s)..."
-        run_liquibase "rollbackCount $2"
+        run_liquibase "rollback-count" "--count=$2"
         print_status "Rollback completed!"
         ;;
     "test")
