@@ -89,6 +89,13 @@ case "${1:-help}" in
         run_liquibase "rollbackCount $2"
         print_status "Rollback completed!"
         ;;
+    "test")
+        check_network
+        print_status "Running migration test (update-rollback cycle)..."
+        print_status "Step 1: Applying all pending migrations..."
+        run_liquibase "updateTestingRollback"
+        print_status "Migration test completed successfully!"
+        ;;
     "validate")
         check_network
         print_status "Validating changelog..."
@@ -110,6 +117,7 @@ case "${1:-help}" in
         echo "  status             Show migration status"
         echo "  sql                Generate SQL for pending migrations (dry run)"
         echo "  rollback <count>   Rollback specified number of changesets"
+        echo "  test               Run migration test (update-rollback cycle)"
         echo "  validate           Validate changelog syntax"
         echo "  history            Show migration history"
         echo "  help               Show this help message"
@@ -117,6 +125,7 @@ case "${1:-help}" in
         echo "Examples:"
         echo "  $0 update          # Apply all pending migrations"
         echo "  $0 status          # Check current migration status"
+        echo "  $0 test            # Test migrations with update-rollback cycle"
         echo "  $0 rollback 1      # Rollback the last migration"
         echo ""
         ;;
