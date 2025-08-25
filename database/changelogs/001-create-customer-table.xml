@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.25.xsd">
+
+    <changeSet id="001-create-customer-table" author="developer">
+        <comment>Create customer table for shopping cart application</comment>
+        
+        <createTable tableName="customers">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="email" type="VARCHAR(255)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="first_name" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_name" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="phone" type="VARCHAR(20)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="date_of_birth" type="DATE">
+                <constraints nullable="true"/>
+            </column>
+            <column name="status" type="VARCHAR(20)" defaultValue="ACTIVE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <rollback>
+            <dropTable tableName="customers"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="002-create-customer-addresses-table" author="developer">
+        <comment>Create customer addresses table for shipping and billing</comment>
+        
+        <createTable tableName="customer_addresses">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="customer_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="address_type" type="VARCHAR(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="street_address" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="city" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="state" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="postal_code" type="VARCHAR(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="country" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="is_default" type="BOOLEAN" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint
+            constraintName="fk_customer_addresses_customer_id"
+            baseTableName="customer_addresses"
+            baseColumnNames="customer_id"
+            referencedTableName="customers"
+            referencedColumnNames="id"
+            onDelete="CASCADE"/>
+
+        <rollback>
+            <dropTable tableName="customer_addresses"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="003-insert-sample-customers" author="developer">
+        <comment>Insert sample customer data for testing</comment>
+        
+        <insert tableName="customers">
+            <column name="email" value="john.doe@example.com"/>
+            <column name="first_name" value="John"/>
+            <column name="last_name" value="Doe"/>
+            <column name="phone" value="+1-555-0123"/>
+            <column name="date_of_birth" value="1985-03-15"/>
+            <column name="status" value="ACTIVE"/>
+        </insert>
+
+        <insert tableName="customers">
+            <column name="email" value="jane.smith@example.com"/>
+            <column name="first_name" value="Jane"/>
+            <column name="last_name" value="Smith"/>
+            <column name="phone" value="+1-555-0456"/>
+            <column name="date_of_birth" value="1990-07-22"/>
+            <column name="status" value="ACTIVE"/>
+        </insert>
+
+        <insert tableName="customers">
+            <column name="email" value="mike.johnson@example.com"/>
+            <column name="first_name" value="Mike"/>
+            <column name="last_name" value="Johnson"/>
+            <column name="phone" value="+1-555-0789"/>
+            <column name="date_of_birth" value="1988-11-08"/>
+            <column name="status" value="ACTIVE"/>
+        </insert>
+
+        <rollback>
+            <delete tableName="customers">
+                <where>email IN ('john.doe@example.com', 'jane.smith@example.com', 'mike.johnson@example.com')</where>
+            </delete>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="004-insert-sample-addresses" author="developer">
+        <comment>Insert sample address data for customers</comment>
+        
+        <insert tableName="customer_addresses">
+            <column name="customer_id" valueComputed="(SELECT id FROM customers WHERE email = 'john.doe@example.com')"/>
+            <column name="address_type" value="SHIPPING"/>
+            <column name="street_address" value="123 Main St"/>
+            <column name="city" value="New York"/>
+            <column name="state" value="NY"/>
+            <column name="postal_code" value="10001"/>
+            <column name="country" value="USA"/>
+            <column name="is_default" valueBoolean="true"/>
+        </insert>
+
+        <insert tableName="customer_addresses">
+            <column name="customer_id" valueComputed="(SELECT id FROM customers WHERE email = 'jane.smith@example.com')"/>
+            <column name="address_type" value="BILLING"/>
+            <column name="street_address" value="456 Oak Ave"/>
+            <column name="city" value="Los Angeles"/>
+            <column name="state" value="CA"/>
+            <column name="postal_code" value="90210"/>
+            <column name="country" value="USA"/>
+            <column name="is_default" valueBoolean="true"/>
+        </insert>
+
+        <rollback>
+            <delete tableName="customer_addresses">
+                <where>customer_id IN (SELECT id FROM customers WHERE email IN ('john.doe@example.com', 'jane.smith@example.com'))</where>
+            </delete>
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>

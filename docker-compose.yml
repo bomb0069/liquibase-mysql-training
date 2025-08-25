@@ -19,6 +19,22 @@ services:
       retries: 10
       start_period: 5s
 
+  liquibase:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: liquibase
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - ./database:/liquibase/changelog
+    environment:
+      - LIQUIBASE_COMMAND_URL=jdbc:mysql://db:3306/store?useSSL=false&allowPublicKeyRetrieval=true
+      - LIQUIBASE_COMMAND_USERNAME=user
+      - LIQUIBASE_COMMAND_PASSWORD=password
+      - LIQUIBASE_COMMAND_CHANGELOG_FILE=changelog-master.xml
+
   admin:
     image: adminer
     restart: always

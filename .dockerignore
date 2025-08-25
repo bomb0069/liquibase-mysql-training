@@ -1,0 +1,9 @@
+# Ignore unnecessary files for Docker build
+.git
+.gitignore
+README.md
+MIGRATION_SUMMARY.md
+tearup/
+*.md
+.DS_Store
+*.log
