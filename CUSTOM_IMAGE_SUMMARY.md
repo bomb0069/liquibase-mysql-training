@@ -5,6 +5,7 @@
 Successfully transformed the Liquibase setup from runtime driver downloads to a custom Docker image approach with the following improvements:
 
 ### ✅ **Created Custom Docker Image**
+
 - **`Dockerfile`**: Custom Liquibase image based on `liquibase/liquibase:4.25`
 - **Pre-installed MySQL Driver**: MySQL Connector/J 8.0.33 built into the image
 - **Optimized Build**: Uses `ADD` instruction for efficient downloading
@@ -12,12 +13,14 @@ Successfully transformed the Liquibase setup from runtime driver downloads to a 
 - **Environment**: Pre-configured `LIQUIBASE_CLASSPATH`
 
 ### ✅ **Updated Docker Compose Configuration**
+
 - **Build Context**: Changed from using external image to building custom image
 - **Removed Runtime Scripts**: Eliminated complex entrypoint script
 - **Simplified Configuration**: Clean environment-based setup
 - **Faster Startup**: No more runtime driver downloads
 
 ### ✅ **Enhanced Tooling**
+
 - **`build.sh`**: New script for managing the custom image
   - Build, rebuild, info, clean commands
   - Colored output and error handling
@@ -28,6 +31,7 @@ Successfully transformed the Liquibase setup from runtime driver downloads to a 
   - Cleaner execution flow
 
 ### ✅ **Optimized Build Context**
+
 - **`.dockerignore`**: Excludes unnecessary files from build context
 - **Reduced Size**: Only includes essential files in Docker build
 - **Faster Builds**: Minimized context transfer
@@ -35,6 +39,7 @@ Successfully transformed the Liquibase setup from runtime driver downloads to a 
 ## Performance Improvements
 
 ### Before (Runtime Downloads):
+
 ```
 1. Container starts
 2. Downloads MySQL driver (2.5MB)
@@ -43,12 +48,14 @@ Successfully transformed the Liquibase setup from runtime driver downloads to a 
 ```
 
 ### After (Custom Image):
+
 ```
 1. Container starts (with driver pre-installed)
 2. Runs Liquibase immediately
 ```
 
 ### Benefits:
+
 - **Faster Startup**: No runtime downloads (saves ~3-5 seconds)
 - **More Reliable**: No dependency on external downloads during runtime
 - **Offline Capable**: Works without internet connectivity
@@ -58,11 +65,13 @@ Successfully transformed the Liquibase setup from runtime driver downloads to a 
 ## File Structure Changes
 
 ### Added Files:
+
 - `database/Dockerfile` - Custom image definition
 - `build.sh` - Image management script
 - `.dockerignore` - Build optimization
 
 ### Modified Files:
+
 - `docker-compose.yml` - Uses custom image build
 - `migrate.sh` - Updated for custom image
 - `README.md` - Updated documentation
@@ -70,11 +79,13 @@ Successfully transformed the Liquibase setup from runtime driver downloads to a 
 - `MIGRATION_SUMMARY.md` - Reflected improvements
 
 ### Removed Files:
+
 - `database/mysql-connector-j.jar` - No longer needed
 
 ## Usage Changes
 
 ### New Workflow:
+
 ```bash
 # One-time setup
 ./build.sh build
@@ -85,6 +96,7 @@ docker-compose up -d
 ```
 
 ### Image Management:
+
 ```bash
 ./build.sh info      # Show image details
 ./build.sh rebuild   # Force rebuild
@@ -97,7 +109,7 @@ docker-compose up -d
 ✅ **Migration Runs Without Downloads**: Clean startup logs  
 ✅ **All Commands Work**: Status, history, rollback, etc.  
 ✅ **No Runtime Dependencies**: Fully self-contained  
-✅ **Documentation Updated**: All READMEs reflect changes  
+✅ **Documentation Updated**: All READMEs reflect changes
 
 ## Key Advantages Achieved
 

@@ -28,13 +28,14 @@ services:
       db:
         condition: service_healthy
     working_dir: /liquibase/changelog
-    command: [
-      "update",
-      "--url=jdbc:mysql://db:3306/store?useSSL=false&allowPublicKeyRetrieval=true",
-      "--username=user",
-      "--password=password",
-      "--changelog-file=changelog-master.yaml"
-    ]
+    command:
+      [
+        "update",
+        "--url=jdbc:mysql://db:3306/store?useSSL=false&allowPublicKeyRetrieval=true",
+        "--username=user",
+        "--password=password",
+        "--changelog-file=changelog-master.yaml",
+      ]
 
   admin:
     image: adminer

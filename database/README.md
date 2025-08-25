@@ -18,6 +18,7 @@ database/
 The migration creates the following tables:
 
 ### customers
+
 - `id` (BIGINT, AUTO_INCREMENT, PRIMARY KEY)
 - `email` (VARCHAR(255), UNIQUE, NOT NULL)
 - `first_name` (VARCHAR(100), NOT NULL)
@@ -29,6 +30,7 @@ The migration creates the following tables:
 - `updated_at` (TIMESTAMP, DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP)
 
 ### customer_addresses
+
 - `id` (BIGINT, AUTO_INCREMENT, PRIMARY KEY)
 - `customer_id` (BIGINT, FOREIGN KEY to customers.id)
 - `address_type` (VARCHAR(20)) - e.g., 'SHIPPING', 'BILLING'
@@ -56,6 +58,7 @@ docker-compose up -d
 ```
 
 The Liquibase container will:
+
 1. Wait for the MySQL database to be healthy
 2. Run all pending migrations using the pre-installed MySQL driver
 3. Exit after successful completion
@@ -65,6 +68,7 @@ The Liquibase container will:
 If you want to run Liquibase commands manually, you can use the following docker commands:
 
 #### Update Database (Run Migrations)
+
 ```bash
 docker run --rm --network mysql_default \
   -v $(pwd)/database:/liquibase/changelog \
@@ -77,6 +81,7 @@ docker run --rm --network mysql_default \
 ```
 
 #### Check Migration Status
+
 ```bash
 docker run --rm --network mysql_default \
   -v $(pwd)/database:/liquibase/changelog \
@@ -89,6 +94,7 @@ docker run --rm --network mysql_default \
 ```
 
 #### Generate SQL for Review (without executing)
+
 ```bash
 docker run --rm --network mysql_default \
   -v $(pwd)/database:/liquibase/changelog \
@@ -101,6 +107,7 @@ docker run --rm --network mysql_default \
 ```
 
 #### Rollback Last Migration
+
 ```bash
 docker run --rm --network mysql_default \
   -v $(pwd)/database:/liquibase/changelog \
@@ -117,10 +124,12 @@ docker run --rm --network mysql_default \
 The migration includes sample customer data:
 
 1. **John Doe** (john.doe@example.com)
+
    - Phone: +1-555-0123
    - Address: 123 Main St, New York, NY 10001
 
 2. **Jane Smith** (jane.smith@example.com)
+
    - Phone: +1-555-0456
    - Address: 456 Oak Ave, Los Angeles, CA 90210
 

@@ -30,16 +30,19 @@ This project demonstrates database schema migration using Liquibase with MySQL i
 ## Quick Start
 
 1. **Build the custom Liquibase image (first time only):**
+
    ```bash
    ./build.sh build
    ```
 
 2. **Start all services:**
+
    ```bash
    docker-compose up -d
    ```
 
 3. **Check migration status:**
+
    ```bash
    ./migrate.sh status
    ```

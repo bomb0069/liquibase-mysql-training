@@ -5,6 +5,7 @@
 This setup successfully created a complete Liquibase-based database schema migration system for a shopping cart application with the following components:
 
 ### 1. Database Structure (`database/` folder)
+
 - **`Dockerfile`**: Custom Liquibase image with MySQL driver pre-installed
 - **`changelog-master.xml`**: Main changelog file that orchestrates all migrations
 - **`liquibase.properties`**: Liquibase configuration file
@@ -12,26 +13,31 @@ This setup successfully created a complete Liquibase-based database schema migra
 - **`README.md`**: Detailed documentation for the database migrations
 
 ### 2. Customer Schema
+
 Successfully created and populated the following tables:
 
 #### `customers` table:
+
 - Primary customer information with email, names, phone, date of birth
 - Includes sample data for 3 customers
 - Features: auto-increment ID, unique email constraint, status field, timestamps
 
 #### `customer_addresses` table:
+
 - Customer shipping and billing addresses
 - Foreign key relationship to customers table
 - Supports multiple address types (SHIPPING, BILLING)
 - Includes sample addresses for testing
 
 ### 3. Docker Integration
+
 - **Custom Dockerfile**: Creates optimized Liquibase image with MySQL driver pre-installed
 - **Updated `docker-compose.yml`**: Uses custom image for faster startup
 - **Build automation**: Eliminates runtime driver downloads
 - **Service Dependencies**: Liquibase waits for MySQL to be healthy before running
 
 ### 4. Migration Management Tools
+
 - **`migrate.sh`**: Command-line helper script for common Liquibase operations
 - **`build.sh`**: Custom image build and management script
 - **Optimized Setup**: Pre-installed drivers, no runtime downloads
@@ -39,6 +45,7 @@ Successfully created and populated the following tables:
 ## Migration Results
 
 ✅ **Successfully Applied 4 Changesets:**
+
 1. `001-create-customer-table`: Created customers table
 2. `002-create-customer-addresses-table`: Created customer_addresses table with foreign key
 3. `003-insert-sample-customers`: Inserted 3 sample customers
@@ -47,6 +54,7 @@ Successfully created and populated the following tables:
 ## Verification Results
 
 ### Tables Created:
+
 ```
 +-----------------------+
 | Tables_in_store       |
@@ -67,12 +75,14 @@ Successfully created and populated the following tables:
 ```
 
 ### Sample Data Inserted:
+
 - **3 Customers**: John Doe, Jane Smith, Mike Johnson
 - **2 Addresses**: New York shipping address, Los Angeles billing address
 
 ## How to Use
 
 ### Quick Start:
+
 ```bash
 # Build custom image (first time only)
 ./build.sh build
@@ -88,6 +98,7 @@ open http://localhost:8080
 ```
 
 ### Available Commands:
+
 ```bash
 # Migration commands
 ./migrate.sh update    # Apply pending migrations
@@ -118,6 +129,7 @@ open http://localhost:8080
 ## Next Steps
 
 To add new migrations:
+
 1. Create new XML files in `database/changelogs/`
 2. Add them to `database/changelog-master.xml`
 3. Run `./migrate.sh update` or restart containers
