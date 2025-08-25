@@ -136,7 +136,7 @@ databaseChangeLog:
               -- Link existing orders to customers based on user_id
               -- Assuming user_id 1 maps to customer_id 1, etc.
               UPDATE orders SET customer_id = user_id WHERE user_id IN (1);
-              
+
               -- Insert some additional sample orders for testing (only use existing user_id=1)
               INSERT INTO orders (user_id, customer_id, shipping_method_id, payment_method_id, sub_total_price, total_price, status)
               VALUES 
@@ -171,7 +171,7 @@ databaseChangeLog:
               WHERE o.customer_id IS NOT NULL 
                 AND o.status IN ('completed', 'paid')
                 AND o.total_price > 0;
-              
+
               -- Add some manual transactions
               INSERT INTO royalty_points (customer_id, order_id, points_earned, points_redeemed, transaction_type, description, transaction_date, expiry_date)
               VALUES 
