@@ -1,0 +1,4 @@
+databaseChangeLog:
+  - include:
+      file: changelogs/001-create-customer-table.yaml
+      relativeToChangelogFile: true

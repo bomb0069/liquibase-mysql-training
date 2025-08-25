@@ -10,7 +10,7 @@ LIQUIBASE_IMAGE="mysql-liquibase-custom"
 DB_URL="jdbc:mysql://db:3306/store"
 DB_USER="user"
 DB_PASSWORD="password"
-CHANGELOG_FILE="changelog-master.xml"
+CHANGELOG_FILE="changelog-master.yaml"
 
 # Colors for output
 RED='\033[0;31m'

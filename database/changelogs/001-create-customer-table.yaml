@@ -1,0 +1,279 @@
+databaseChangeLog:
+  - changeSet:
+      id: 001-create-customer-table
+      author: developer
+      comment: Create customer table for shopping cart application
+      changes:
+        - createTable:
+            tableName: customers
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: email
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: first_name
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: last_name
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: phone
+                  type: VARCHAR(20)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: date_of_birth
+                  type: DATE
+                  constraints:
+                    nullable: true
+              - column:
+                  name: status
+                  type: VARCHAR(20)
+                  defaultValue: ACTIVE
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: TIMESTAMP
+                  defaultValueComputed: CURRENT_TIMESTAMP
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: TIMESTAMP
+                  defaultValueComputed: CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+                  constraints:
+                    nullable: false
+      rollback:
+        - dropTable:
+            tableName: customers
+
+  - changeSet:
+      id: 002-create-customer-addresses-table
+      author: developer
+      comment: Create customer addresses table for shipping and billing
+      changes:
+        - createTable:
+            tableName: customer_addresses
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: customer_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: address_type
+                  type: VARCHAR(20)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: street_address
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: city
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: state
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: postal_code
+                  type: VARCHAR(20)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: country
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: is_default
+                  type: BOOLEAN
+                  defaultValueBoolean: false
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: TIMESTAMP
+                  defaultValueComputed: CURRENT_TIMESTAMP
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: TIMESTAMP
+                  defaultValueComputed: CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            constraintName: fk_customer_addresses_customer_id
+            baseTableName: customer_addresses
+            baseColumnNames: customer_id
+            referencedTableName: customers
+            referencedColumnNames: id
+            onDelete: CASCADE
+      rollback:
+        - dropTable:
+            tableName: customer_addresses
+
+  - changeSet:
+      id: 003-insert-sample-customers
+      author: developer
+      comment: Insert sample customer data for testing
+      changes:
+        - insert:
+            tableName: customers
+            columns:
+              - column:
+                  name: email
+                  value: john.doe@example.com
+              - column:
+                  name: first_name
+                  value: John
+              - column:
+                  name: last_name
+                  value: Doe
+              - column:
+                  name: phone
+                  value: +1-555-0123
+              - column:
+                  name: date_of_birth
+                  value: "1985-03-15"
+              - column:
+                  name: status
+                  value: ACTIVE
+        - insert:
+            tableName: customers
+            columns:
+              - column:
+                  name: email
+                  value: jane.smith@example.com
+              - column:
+                  name: first_name
+                  value: Jane
+              - column:
+                  name: last_name
+                  value: Smith
+              - column:
+                  name: phone
+                  value: +1-555-0456
+              - column:
+                  name: date_of_birth
+                  value: "1990-07-22"
+              - column:
+                  name: status
+                  value: ACTIVE
+        - insert:
+            tableName: customers
+            columns:
+              - column:
+                  name: email
+                  value: mike.johnson@example.com
+              - column:
+                  name: first_name
+                  value: Mike
+              - column:
+                  name: last_name
+                  value: Johnson
+              - column:
+                  name: phone
+                  value: +1-555-0789
+              - column:
+                  name: date_of_birth
+                  value: "1988-11-08"
+              - column:
+                  name: status
+                  value: ACTIVE
+      rollback:
+        - delete:
+            tableName: customers
+            where: email IN ('john.doe@example.com', 'jane.smith@example.com', 'mike.johnson@example.com')
+
+  - changeSet:
+      id: 004-insert-sample-addresses
+      author: developer
+      comment: Insert sample address data for customers
+      changes:
+        - insert:
+            tableName: customer_addresses
+            columns:
+              - column:
+                  name: customer_id
+                  valueComputed: (SELECT id FROM customers WHERE email = 'john.doe@example.com')
+              - column:
+                  name: address_type
+                  value: SHIPPING
+              - column:
+                  name: street_address
+                  value: 123 Main St
+              - column:
+                  name: city
+                  value: New York
+              - column:
+                  name: state
+                  value: NY
+              - column:
+                  name: postal_code
+                  value: "10001"
+              - column:
+                  name: country
+                  value: USA
+              - column:
+                  name: is_default
+                  valueBoolean: true
+        - insert:
+            tableName: customer_addresses
+            columns:
+              - column:
+                  name: customer_id
+                  valueComputed: (SELECT id FROM customers WHERE email = 'jane.smith@example.com')
+              - column:
+                  name: address_type
+                  value: BILLING
+              - column:
+                  name: street_address
+                  value: 456 Oak Ave
+              - column:
+                  name: city
+                  value: Los Angeles
+              - column:
+                  name: state
+                  value: CA
+              - column:
+                  name: postal_code
+                  value: "90210"
+              - column:
+                  name: country
+                  value: USA
+              - column:
+                  name: is_default
+                  valueBoolean: true
+      rollback:
+        - delete:
+            tableName: customer_addresses
+            where: customer_id IN (SELECT id FROM customers WHERE email IN ('john.doe@example.com', 'jane.smith@example.com'))

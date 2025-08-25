@@ -33,7 +33,7 @@ services:
       "--url=jdbc:mysql://db:3306/store?useSSL=false&allowPublicKeyRetrieval=true",
       "--username=user",
       "--password=password",
-      "--changelog-file=changelog-master.xml"
+      "--changelog-file=changelog-master.yaml"
     ]
 
   admin:
