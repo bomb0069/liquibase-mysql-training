@@ -5,7 +5,6 @@ This project demonstrates database schema migration using Liquibase with MySQL i
 ## Project Structure
 
 ```
-├── Dockerfile                 # Custom Liquibase image with MySQL driver
 ├── docker-compose.yml          # Docker services configuration
 ├── build.sh                   # Custom image build script
 ├── migrate.sh                 # Migration helper script
@@ -13,6 +12,7 @@ This project demonstrates database schema migration using Liquibase with MySQL i
 ├── tearup/
 │   └── init.sql               # Initial database setup
 ├── database/                  # Liquibase migration files
+│   ├── Dockerfile             # Custom Liquibase image with MySQL driver
 │   ├── changelog-master.xml   # Main changelog
 │   ├── liquibase.properties   # Liquibase configuration
 │   ├── README.md             # Database migration documentation

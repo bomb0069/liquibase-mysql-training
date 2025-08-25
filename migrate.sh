@@ -48,7 +48,7 @@ run_liquibase() {
     # Check if custom image exists, if not build it
     if ! docker images | grep -q "$LIQUIBASE_IMAGE"; then
         print_status "Building custom Liquibase image..."
-        docker build -t "$LIQUIBASE_IMAGE" .
+        docker build -t "$LIQUIBASE_IMAGE" -f database/Dockerfile .
     fi
     
     docker run --rm --network "$NETWORK_NAME" \

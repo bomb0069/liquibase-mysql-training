@@ -5,6 +5,7 @@
 This setup successfully created a complete Liquibase-based database schema migration system for a shopping cart application with the following components:
 
 ### 1. Database Structure (`database/` folder)
+- **`Dockerfile`**: Custom Liquibase image with MySQL driver pre-installed
 - **`changelog-master.xml`**: Main changelog file that orchestrates all migrations
 - **`liquibase.properties`**: Liquibase configuration file
 - **`changelogs/001-create-customer-table.xml`**: Customer-related table migrations

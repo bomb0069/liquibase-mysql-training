@@ -58,7 +58,7 @@ Successfully transformed the Liquibase setup from runtime driver downloads to a 
 ## File Structure Changes
 
 ### Added Files:
-- `Dockerfile` - Custom image definition
+- `database/Dockerfile` - Custom image definition
 - `build.sh` - Image management script
 - `.dockerignore` - Build optimization
 

@@ -22,7 +22,7 @@ services:
   liquibase:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: database/Dockerfile
     container_name: liquibase
     depends_on:
       db:

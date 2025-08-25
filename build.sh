@@ -25,7 +25,7 @@ print_error() {
 }
 
 IMAGE_NAME="mysql-liquibase-custom"
-DOCKERFILE_PATH="."
+DOCKERFILE_PATH="database"
 
 case "${1:-build}" in
     "build")

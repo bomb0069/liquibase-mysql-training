@@ -6,6 +6,7 @@ This directory contains Liquibase database migration files for the shopping cart
 
 ```
 database/
+├── Dockerfile                    # Custom Liquibase image with MySQL driver
 ├── changelog-master.xml          # Main changelog file that includes all migrations
 ├── liquibase.properties         # Liquibase configuration properties
 └── changelogs/
