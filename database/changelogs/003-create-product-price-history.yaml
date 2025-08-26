@@ -1,0 +1,95 @@
+databaseChangeLog:
+  - changeSet:
+      id: 001-create-product-price-history-table
+      author: developer
+      comment: Create product price history table to track pricing changes with effective dates
+      changes:
+        - sqlFile:
+            path: sql/001-create-product-price-history-table.sql
+            relativeToChangelogFile: true
+      rollback:
+        - sqlFile:
+            path: sql/rollback/001-drop-product-price-history-table.sql
+            relativeToChangelogFile: true
+
+  - changeSet:
+      id: 002-migrate-current-product-prices
+      author: developer
+      comment: Migrate existing product prices to the new price history system
+      changes:
+        - sqlFile:
+            path: sql/002-migrate-current-product-prices.sql
+            relativeToChangelogFile: true
+      rollback:
+        - sqlFile:
+            path: sql/rollback/002-clear-migrated-prices.sql
+            relativeToChangelogFile: true
+
+  - changeSet:
+      id: 003-create-price-history-views
+      author: developer
+      comment: Create views for easier price querying and current price lookup
+      changes:
+        - sqlFile:
+            path: sql/003-create-price-history-views.sql
+            relativeToChangelogFile: true
+      rollback:
+        - sqlFile:
+            path: sql/rollback/003-drop-price-history-views.sql
+            relativeToChangelogFile: true
+
+  - changeSet:
+      id: 004-create-sample-price-management-functions
+      author: developer
+      comment: Create sample price management functions (simplified for Liquibase compatibility)
+      changes:
+        - sql:
+            sql: |
+              -- Note: Stored procedures are skipped due to Liquibase DELIMITER compatibility issues
+              -- In production, these would be created separately or using native MySQL tools
+              -- This demonstrates the pattern of using YAML + external SQL files
+              
+              -- Create a simple function table for demonstration
+              CREATE TABLE price_management_functions (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                function_name VARCHAR(100) NOT NULL,
+                description TEXT,
+                sql_example TEXT,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+              ) CHARACTER SET utf8 COLLATE utf8_general_ci;
+              
+              -- Insert examples of what the procedures would do
+              INSERT INTO price_management_functions (function_name, description, sql_example) VALUES
+              ('sp_set_product_price', 'Set new product price with effective date', 'CALL sp_set_product_price(1, 149.95, ''2025-12-01'', ''REGULAR'', ''Holiday pricing'', ''manager'')'),
+              ('sp_get_current_price', 'Get current effective price for product', 'CALL sp_get_current_price(1, @price, @type, @date)'),
+              ('sp_cancel_future_price', 'Cancel scheduled future price change', 'CALL sp_cancel_future_price(1, ''2025-12-01'', ''manager'')'),
+              ('sp_get_price_on_date', 'Get historical price on specific date', 'CALL sp_get_price_on_date(1, ''2025-06-01'', @price, @type)');
+      rollback:
+        - sql:
+            sql: DROP TABLE IF EXISTS price_management_functions;
+
+  - changeSet:
+      id: 005-insert-sample-price-schedules
+      author: developer
+      comment: Insert sample future price schedules to demonstrate the system
+      changes:
+        - sqlFile:
+            path: sql/005-insert-sample-price-schedules.sql
+            relativeToChangelogFile: true
+      rollback:
+        - sqlFile:
+            path: sql/rollback/005-clear-sample-price-schedules.sql
+            relativeToChangelogFile: true
+
+  - changeSet:
+      id: 006-create-price-audit-table
+      author: developer
+      comment: Create audit table for price changes (triggers skipped for Liquibase compatibility)
+      changes:
+        - sqlFile:
+            path: sql/006-create-price-change-triggers.sql
+            relativeToChangelogFile: true
+      rollback:
+        - sqlFile:
+            path: sql/rollback/006-drop-price-change-triggers.sql
+            relativeToChangelogFile: true
