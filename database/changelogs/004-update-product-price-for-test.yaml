@@ -1,0 +1,11 @@
+databaseChangeLog:
+  - changeSet:
+      id: 001-update-stock-of-bicycle-to-100
+      author: tester
+      comment: Update stock of bicycle product to 100
+      runAlways: true
+      context: test
+      changes:
+        - sqlFile:
+            path: sql/001-update-stock-of-bicycle-to-100.sql
+            relativeToChangelogFile: true

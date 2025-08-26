@@ -1,0 +1,1 @@
+update products set stock = 100 where id = 1; 
