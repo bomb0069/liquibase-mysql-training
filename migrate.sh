@@ -109,6 +109,18 @@ case "${1:-help}" in
         print_status "Showing migration history..."
         run_liquibase "history"
         ;;
+    "update-test")
+        check_network
+        print_status "Applying migrations with test context only..."
+        run_liquibase "update" "--contexts=test"
+        print_status "Test context migration completed successfully!"
+        ;;
+    "update-prod")
+        check_network
+        print_status "Applying migrations excluding test context..."
+        run_liquibase "update" "--contexts=!test"
+        print_status "Production migration completed successfully!"
+        ;;
     "help"|*)
         echo "Liquibase Migration Helper"
         echo ""
@@ -116,6 +128,8 @@ case "${1:-help}" in
         echo ""
         echo "Commands:"
         echo "  update, migrate    Apply all pending migrations"
+        echo "  update-test        Apply migrations with test context only"
+        echo "  update-prod        Apply migrations excluding test context"
         echo "  status             Show migration status"
         echo "  sql                Generate SQL for pending migrations (dry run)"
         echo "  rollback <count>   Rollback specified number of changesets"
@@ -126,6 +140,8 @@ case "${1:-help}" in
         echo ""
         echo "Examples:"
         echo "  $0 update          # Apply all pending migrations"
+        echo "  $0 update-test     # Apply only migrations with test context"
+        echo "  $0 update-prod     # Apply migrations excluding test context"
         echo "  $0 status          # Check current migration status"
         echo "  $0 test            # Test migrations with update-rollback cycle"
         echo "  $0 rollback 1      # Rollback the last migration"
